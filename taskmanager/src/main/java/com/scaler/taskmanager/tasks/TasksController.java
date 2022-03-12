@@ -26,10 +26,22 @@ public class TasksController {
     @PostMapping("")
     ResponseEntity<TaskEntity> createTask(@RequestBody CreateTaskRequestBody body) {
 
-        TaskEntity savedTask = tasksService.addNewTask(body.name);
+        TaskEntity savedTask = tasksService.addNewTask(body.getName(),body.getDueDate(),body.getStatus());
 
         return ResponseEntity.created(
                 URI.create(Constants.BASE_URL + "/tasks/" + savedTask.id)
         ).body(savedTask);
+    }
+
+    @PatchMapping("/{id}")
+    ResponseEntity<TaskEntity> updateTask(@PathVariable(value = "id") Long id,@RequestBody UpdateTaskRequestBody body ){
+        TaskEntity updatedTask  = tasksService.updateTask(id,body.getName(),body.getDueDate(),body.getStatus());
+        return ResponseEntity.created(URI.create(Constants.BASE_URL + "/tasks/" + id)).body(updatedTask);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    boolean deleteTask(@PathVariable(value = "id") Long id){
+        boolean deleteTask = tasksService.deleteTask(id);
+        return deleteTask;
     }
 }

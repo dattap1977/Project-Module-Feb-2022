@@ -41,4 +41,8 @@ public class TasksService {
         tasksRepo.deleteById(id);
         return true;
     }
+
+    public TaskEntity findTask(Long id) {
+        return tasksRepo.getById(id);
+    }
 }
